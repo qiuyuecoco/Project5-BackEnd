@@ -14,8 +14,9 @@ html
             dl
                 each name, index in users
                     dt= index + ': ' + name.firstName + ' ' + name.lastName
-                    button(href='/users/' + index.firstName)= 'EDIT'
-                    button(href='/users/' + index.firstName)= 'DELETE'
+                    a(href='/users/' + name.firstName)= 'EDIT'
+                    div
+                        a(href='/removeUser/' + name.uid)= 'DELETE'
                     dd= 'E-mail: ' + name.email
                     dd= 'Password: ' + name.password
                     dd= 'Role: ' + name.role

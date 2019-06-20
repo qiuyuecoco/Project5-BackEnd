@@ -5,22 +5,22 @@ html
         h1= message
         form(action='/createUser' method="post")
             div
-                label(for=fName) First Name:
-                input(id= "fname", name= "fname")
+                label(for=firstName) First Name:
+                input(id= "firstName", name= "firstName", required= true)
             div
-                label(for=lname) Last Name:
-                input(id= "lname", name= "lname")
+                label(for=lastName) Last Name:
+                input(id= "lastName", name= "lastName", required= true)
             div
                 label(for=email) Email
-                input(id= "email", name= "email")
+                input(id= "email", name= "email", required= true)
             div
                 label(for=password) Password
-                input(id= "password", name= "password")
+                input(id= "password", name= "password", required= true)
             div
                 label(for=role) Role
-                input(id= "role", name= "role")
+                input(id= "role", name= "role", required= true)
             div
                 label(for=age) Age
-                input(id= "age", name= "age")
+                input(id= "age", name= "age", required= true)
             div
                 input(type= "submit")
