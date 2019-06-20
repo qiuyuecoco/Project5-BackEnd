@@ -1,0 +1,35 @@
+html
+    head
+        title= title
+    body
+        h1(class='login', id='loginTitle')= message
+        h4 Enter & Submit new user
+        form(action='/newUser' method="post")
+            div
+                label(for=firstName) First Name:
+                div
+                    input(id= "firstName", name= "firstName")
+            div
+                label(for=lastName) Last Name:
+                div
+                    input(id= "lastName", name= "lastName")
+            div
+                label(for=email) E-mail:
+                div
+                    input(id= "email", name= "email")
+            div
+                label(for=password) Password:
+                div
+                    input(id= "password", name= "password")
+            div
+                label(for=role) Role:
+                div
+                    input(id= "role", name= "role")
+            div
+                label(for=age) Age:
+                div
+                    input(id= "age", name= "age")
+            div
+                input(type= "submit")
+
+        include ./foot.pug

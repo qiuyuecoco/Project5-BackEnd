@@ -1,0 +1,8 @@
+{
+'userId':'1',
+'firstName':'Ty',
+'lastName':'Seow',
+'email':'tkseow@gmail.com',
+'age':'26'
+'timeStamp':'
+}
