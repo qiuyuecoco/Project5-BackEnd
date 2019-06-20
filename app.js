@@ -119,7 +119,7 @@ app.get('/users/:name', (req, res) =>{
 app.post('/editUser', (req, res) => {
     let duid = req.body.user_id;
     console.log(`POST /newUser: ${JSON.stringify(req.body)}`);
-    user.findOneAndUpdate({uid: duid}, {
+    user.findByIdAndUpdate({uid: duid}, {
         $set:{firstName: req.body.firstName},
         $set:{lastName: req.body.lastName},
         $set:{email: req.body.email},
@@ -143,19 +143,19 @@ app.post('/editUser', (req, res) => {
     //     res.send(`done ${data}`);
     // });
 });
-// //TODO: update
-// app.post('/updateUserRole', (req, res) =>{
-//     console.log(`POST /updateUserRole: ${JSON.stringify(req.body)}`);
-//     let matchedName = req.body.name;
-//     let newrole = req.body.role;
-//     user.findOneAndUpdate({name: matchedName}, {role: newrole}, {new: true}, (err, data) =>{
-//         if (err) return console.log(`Oops! ${err}`);
-//         console.log(`data == ${data.role}`);
-//         let returnMsg = `user name: ${matchedName} New role: ${data.role}`;
-//         console.log(returnMsg);
-//         res.send(returnMsg);
-//     });
-// });
+//TODO: updates UserRole...applies to 1st found user
+app.post('/updateUser', (req, res) =>{
+    console.log(`POST /updateUserRole: ${JSON.stringify(req.body)}`);
+    let matchedName = req.body.name;
+    let newrole = req.body.role;
+    user.findOneAndUpdate({name: matchedName}, {role: newrole}, {new: true}, (err, data) =>{
+        if (err) return console.log(`Oops! ${err}`);
+        console.log(`data == ${data.role}`);
+        let returnMsg = `user name: ${matchedName} New role: ${data.role}`;
+        console.log(returnMsg);
+        res.send(returnMsg);
+    });
+});
 // TODO: delete
 app.post('/removeUser', (req, res) =>{
     console.log(`POST /removeUser: ${JSON.stringify(req.body)}`);
@@ -166,6 +166,7 @@ app.post('/removeUser', (req, res) =>{
         let returnMsg = `user name: ${matchedName}, removed dat: ${data}`;
         console.log(returnMsg);
         res.send(returnMsg);
+        res.redirect('/users');
     });
 });
 

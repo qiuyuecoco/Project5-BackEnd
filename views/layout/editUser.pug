@@ -2,7 +2,7 @@ html
     head
         title= title
     body
-        form(action='/editUser' method="post")
+        form(action='/updateUser' method="post")
             div(hidden)
                 label(for=createdDate)
                 input(id= "createdDate", name= "createdDate", value= user.createdDate)
