@@ -17,20 +17,6 @@ mongoose.connect('mongodb://127.0.0.1/MongoDB', {useNewUrlParser: true}); // "Mo
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
-// TODO: this may need combined with the below create; /newUser
-// db.once('open', function() {
-//      console.log('db connected');
-//      const newUser = new user();
-//      newUser.name = "Ken Adams";
-//      newUser.role = "Student";
-//      newUser.age = 20;
-//      newUser.save((err, data) => { // stored to the database
-//         if (err) {
-//             return console.error(err);
-//         }
-//         console.log(`new user save: ${data}`);
-//     });
-// });
 
 const userSchema = new mongoose.Schema({
     firstName: String,
@@ -38,14 +24,21 @@ const userSchema = new mongoose.Schema({
     email: String,
     password: String,
     role: String,
-    age: { type: Number, min: 18, max: 70 },
+    age: { type: Number, min: 18, max: 80 },
     createdDate: { type: Date, default: Date.now }
 });
-
 const user = mongoose.model('users', userSchema);
-// create
-app.post('/createUser', (req, res) => {
-    // if(res !== ''){
+// login page; validation doesn't exist, click button to view user list
+app.get('/', function (req, res){
+    res.render('login',
+        {title: 'Login',
+            message: 'User Management Login',
+            partial: ` number of users`,
+            date: moment().format('LLL')
+        });
+});
+// create & save new user w/ redirect to user list page
+app.post('/createUser', function (req, res) {
         console.log(`POST /newUser: ${JSON.stringify(req.body)}`);
         const newUser = new user();
         newUser.firstName = req.body.firstName;
@@ -59,39 +52,22 @@ app.post('/createUser', (req, res) => {
                 return console.error(err);
             }
             console.log(`new user saved: ${data}`);
-            res.send(`done: ${data}`);
-        });
-        // TODO: redirect breaks
-        // res.redirect('/users');
-    // } else{
-    //     res.send('please make sure all fields are filled out')
-    // }
-});
-// login page
-app.get('/', function (req, res){
-    res.render('login',
-        {title: 'Login',
-            message: 'User Management Login',
-            partial: ` number of users`,
-            date: moment().format('LLL')
+            return res.redirect('/users');
         });
 
 });
-// gets the list of users page
+// gets User List page
 app.get('/users', function (req, res){
     user.find({}, (err, docs)=> {
         res.render('usersList',
             {
-                title: 'User List',
-                message: 'User Management List',
                 partial: ` number of users`,
                 users: docs,
                 date: moment().format("MM/DD/YYYY")
-
             });
     });
 });
-// read & gets create user page
+// gets Create User page
 app.get('/newUser', (req, res) =>{
     res.render('createUser',
         {title: 'Create User',
@@ -99,23 +75,25 @@ app.get('/newUser', (req, res) =>{
             date: moment().format('LLL')
         });
 });
-// read/gets edit user page
-app.get('/users/:name', (req, res) =>{
-    let userName = req.params.name;
-    console.log(`GET /user/:name: ${JSON.stringify(req.params)}`);
-    user.findOne({firstName: userName}, (err, data) => {
+//gets Edit User page
+app.get('/users/:_id', (req, res) =>{
+    let userId = req.params._id;
+    console.log(`GET /user/:_id: ${JSON.stringify(req.params)}`);
+
+    user.findOne({_id: userId}, (err, data) => {
         if (err) return console.log(`Oops! ${err}`);
         console.log(`data -- ${JSON.stringify(data)}`);
-        let returnMsg = `user name: ${userName} role: ${data.role}`;
+        let returnMsg = `userID: ${userId} role: ${data.role}`;
         console.log(returnMsg);
         res.render('editUser',
             {title: 'Edit User',
                 user: data,
+                message: 'Update the below user & submit changes',
                 user_id: data._id
             });
     });
 });
-// updates/edits user
+// updates/Edits User
 app.post('/editUser', (req, res) => {
     let duid = req.body.user_id;
     console.log(`POST /newUser: ${JSON.stringify(req.body)}`);
@@ -145,15 +123,29 @@ app.post('/editUser', (req, res) => {
 });
 //TODO: updates UserRole...applies to 1st found user
 app.post('/updateUser', (req, res) =>{
-    console.log(`POST /updateUserRole: ${JSON.stringify(req.body)}`);
-    let matchedName = req.body.name;
-    let newrole = req.body.role;
-    user.findOneAndUpdate({name: matchedName}, {role: newrole}, {new: true}, (err, data) =>{
-        if (err) return console.log(`Oops! ${err}`);
+    // console.log(`POST /updateUser: ${JSON.stringify(req.body)}`);
+    let id= req.body._id;
+    let newFirstName =req.body.firstName;
+    let newLastName = req.body.lastName;
+    let newEmail =req.body.email;
+    let newPassword =req.body.password;
+    let newRole =req.body.role;
+    let newAge =req.body.age;
+    user.findOneAndUpdate( {_id: id},
+        {firstName: newFirstName,
+            lastName: newLastName,
+            email: newEmail,
+            password: newPassword,
+            role: newRole,
+            age: newAge
+        }, {new: true}, (err, data) =>{
+        if (err) {
+            return console.log(`Oops! ${err}`);
+        }
         console.log(`data == ${data.role}`);
-        let returnMsg = `user name: ${matchedName} New role: ${data.role}`;
+        let returnMsg = `user name: ${newLastName} New role: ${data.role}`;
         console.log(returnMsg);
-        res.send(returnMsg);
+        return res.redirect('/users');
     });
 });
 // TODO: delete

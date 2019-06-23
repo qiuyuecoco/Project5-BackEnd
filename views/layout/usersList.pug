@@ -11,16 +11,36 @@ html
         //h2.myClass.mySecondClass#numUsers Total Users: #{partial}
         //a(href='/myEndPoint')
         table
+            tr
+                th First Name
+                th Last Name
+                th Email
+                th Password
+                th Role
+                th Age
+                th Edit
+                th Delete
             dl
                 each name, index in users
-                    dt= index + ': ' + name.firstName + ' ' + name.lastName
-                    a(href='/users/' + name.firstName)= 'EDIT'
-                    div
-                        a(href='/removeUser/' + name.uid)= 'DELETE'
-                    dd= 'E-mail: ' + name.email
-                    dd= 'Password: ' + name.password
-                    dd= 'Role: ' + name.role
-                    dd= 'Age: ' + name.age
+                    tr
+                        td= name.firstName
+                        td= name.lastName
+                        td= name.email
+                        td= name.password
+                        td= name.role
+                        td= name.age
+                        td
+                            a(href='/users/' + name._id)= 'EDIT'
+                        td
+                            a(href='/removeUser/' + name._id)= 'DELETE'
+
+                    //
+                    //    dt= index + ': ' + name.firstName + ' ' + name.lastName
+                    //
+                    //dd= 'E-mail: ' + name.email
+                    //dd= 'Password: ' + name.password
+                    //dd= 'Role: ' + name.role
+                    //dd= 'Age: ' + name.age
 
 
 //(style={color: 'red', background: 'green'})
