@@ -13,5 +13,6 @@ Click 'EDIT' to be directed to the editUser page with selected user's info pre-p
 
 ### Delete Users
 
-Click 'DELETE' to delete corresponding user in table.
+Click 'DELETE' to be directed to the removeUser page with selected user's info pre-populated to confirm user removal. Once submitted, user will be redirected to the User List.
+
 
