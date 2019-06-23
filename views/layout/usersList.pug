@@ -2,6 +2,7 @@
 html
     head
         title= title
+        link(rel='stylesheet', href='./../public/style.css')
     body
         h1(class='myClass', id='myId')= message
         //button(action='/newUser' method="get")
@@ -33,6 +34,8 @@ html
                             a(href='/users/' + name._id)= 'EDIT'
                         td
                             a(href='/removeUser/' + name._id)= 'DELETE'
+                        td(hidden)= name._id
+                        td(hidden)= name.createdDate
 
                     //
                     //    dt= index + ': ' + name.firstName + ' ' + name.lastName

@@ -93,35 +93,7 @@ app.get('/users/:_id', (req, res) =>{
             });
     });
 });
-// updates/Edits User
-app.post('/editUser', (req, res) => {
-    let duid = req.body.user_id;
-    console.log(`POST /newUser: ${JSON.stringify(req.body)}`);
-    user.findByIdAndUpdate({uid: duid}, {
-        $set:{firstName: req.body.firstName},
-        $set:{lastName: req.body.lastName},
-        $set:{email: req.body.email},
-        $set:{password: req.body.password},
-        $set:{role: req.body.role},
-        $set:{age: req.body.age}}, (err, data) => {
-        if (err) return console.log(`Oops! ${err}`);
-        console.log(`data -- ${JSON.stringify(data)}`);
-        let returnMsg = `updated user: ${data._id} User: ${data.firstName} ${data.lastName}`;
-        console.log(returnMsg);
-        res.send(returnMsg);
-    });
-    // const newUser = new user();
-    // newUser.name = req.body.name;
-    // newUser.role = req.body.role;
-    // newUser.save((err, data) => {
-    //     if (err) {
-    //         return console.error(err);
-    //     }
-    //     console.log(`new user save: ${data}`);
-    //     res.send(`done ${data}`);
-    // });
-});
-//TODO: updates UserRole...applies to 1st found user
+// updates user via form with pre-populated info
 app.post('/updateUser', (req, res) =>{
     // console.log(`POST /updateUser: ${JSON.stringify(req.body)}`);
     let id= req.body._id;
@@ -148,17 +120,37 @@ app.post('/updateUser', (req, res) =>{
         return res.redirect('/users');
     });
 });
-// TODO: delete
-app.post('/removeUser', (req, res) =>{
-    console.log(`POST /removeUser: ${JSON.stringify(req.body)}`);
-    let matchedName = req.body.name;
-    user.findOneAndDelete({name: matchedName}, (err, data) =>{
+app.get('/removeUser/:_id', (req, res) =>{
+    let userId = req.params._id;
+    console.log(`GET /user/:_id: ${JSON.stringify(req.params)}`);
+
+    user.findOne({_id: userId}, (err, data) => {
         if (err) return console.log(`Oops! ${err}`);
         console.log(`data -- ${JSON.stringify(data)}`);
-        let returnMsg = `user name: ${matchedName}, removed dat: ${data}`;
+        let returnMsg = `userID: ${userId} role: ${data.role}`;
         console.log(returnMsg);
-        res.send(returnMsg);
-        res.redirect('/users');
+        res.render('removeUser',
+            {title: 'Confirm Delete',
+                user: data,
+                message: 'Clicking Submit will permanently delete user!',
+                user_id: data._id
+            });
+    });
+});
+// TODO: delete
+app.post('/delete', (req, res) =>{
+    console.log(`POST /removeUser: ${JSON.stringify(req.body)}`);
+    // let matchedName = req.body.name;
+    let userId = req.body._id;
+    user.findOneAndDelete( {_id: userId}, (err, data)=>{
+        if (err) {
+            return console.log(`Oops! ${err}`);
+        } else {
+            console.log(`data -- ${JSON.stringify(data)}`);
+            let returnMsg = `user id: ${userId}, removed data: ${data}`;
+            console.log(returnMsg);
+            res.redirect('/users');
+        }
     });
 });
 
@@ -166,9 +158,4 @@ app.listen(port, (err) => {
     if (err) console.log(err);
     console.log(`App Server listening on port: ${port}`);
 });
-
-// app.get('/', (req, res) =>{
-//     res.sendFile(__dirname + '/public/index.html');
-// });
-//
 
