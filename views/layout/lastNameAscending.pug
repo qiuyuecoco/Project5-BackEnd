@@ -1,4 +1,3 @@
-
 html
     head
         title= title
@@ -6,15 +5,12 @@ html
     body
         h1(class='myClass', id='myId')= message
         //button(action='/newUser' method="get")
-        a(href='/newUser') Create New User
-
+        a(href='/users') Back to User list; in Create Date Order
         br
         a(href='/lastNameAscending') Sort Last Name Ascending
         br
         a(href='/lastNameDescending') Sort Last Name Descending
-
-        //h2.myClass.mySecondClass#numUsers Total Users: #{partial}
-        //a(href='/myEndPoint')
+        br
         table
             tr
                 th First Name
@@ -40,19 +36,3 @@ html
                             a(href='/removeUser/' + name._id)= 'DELETE'
                         td(hidden)= name._id
                         td(hidden)= name.createdDate
-
-                    //
-                    //    dt= index + ': ' + name.firstName + ' ' + name.lastName
-                    //
-                    //dd= 'E-mail: ' + name.email
-                    //dd= 'Password: ' + name.password
-                    //dd= 'Role: ' + name.role
-                    //dd= 'Age: ' + name.age
-
-
-//(style={color: 'red', background: 'green'})
-    //th User ID
-    //th First Name
-    //th Last Name
-    //th Email
-    //th Age

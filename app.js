@@ -54,14 +54,14 @@ app.post('/createUser', function (req, res) {
             console.log(`new user saved: ${data}`);
             return res.redirect('/users');
         });
-
 });
 // gets User List page
 app.get('/users', function (req, res){
     user.find({}, (err, docs)=> {
         res.render('usersList',
             {
-                partial: ` number of users`,
+                title: 'List',
+                message: `User Management List`,
                 users: docs,
                 date: moment().format("MM/DD/YYYY")
             });
@@ -137,23 +137,28 @@ app.get('/removeUser/:_id', (req, res) =>{
             });
     });
 });
-// TODO: delete
-app.post('/delete', (req, res) =>{
-    console.log(`POST /removeUser: ${JSON.stringify(req.body)}`);
-    // let matchedName = req.body.name;
-    let userId = req.body._id;
-    user.findOneAndDelete( {_id: userId}, (err, data)=>{
-        if (err) {
-            return console.log(`Oops! ${err}`);
-        } else {
-            console.log(`data -- ${JSON.stringify(data)}`);
-            let returnMsg = `user id: ${userId}, removed data: ${data}`;
-            console.log(returnMsg);
-            res.redirect('/users');
-        }
+// Sort last name; ascending
+app.get('/lastNameAscending', function (req, res){
+    user.find({}, null, {sort:{ lastName: 1 }},(err, docs)=>{
+        res.render('lastNameAscending',
+                {
+                    title: 'Last Name Sort Ascending',
+                    message: `List sort by last name alphabetically in ascending order`,
+                    users: docs,
+                });
     });
 });
-
+// Sort last name; descending
+app.get('/lastNameDescending', function (req, res){
+    user.find({}, null, {sort:{ lastName: -1 }},(err, docs)=>{
+        res.render('lastNameAscending',
+            {
+                title: 'Last Name Sort Descending',
+                message: `List sort by last name alphabetically in descending order`,
+                users: docs,
+            });
+    });
+});
 app.listen(port, (err) => {
     if (err) console.log(err);
     console.log(`App Server listening on port: ${port}`);
