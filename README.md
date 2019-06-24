@@ -15,4 +15,7 @@ Click 'EDIT' to be directed to the editUser page with selected user's info pre-p
 
 Click 'DELETE' to be directed to the removeUser page with selected user's info pre-populated to confirm user removal. Once submitted, user will be redirected to the User List.
 
+### Sort Users
+
+Each sort 'link' redirects user to a get method of the user list sorted in the selected order. 'Back to user list' will redirect them to the main page where they can create more users.
 
