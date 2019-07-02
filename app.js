@@ -16,10 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, './views/layout'));
 app.set('view engine', 'pug');
 
-mongoose.connect('mongodb://localhost/MongoDB', {useNewUrlParser: true}); // "MongoDB" is the db name
+// mongoose.connect('mongodb://localhost/MongoDB', {useNewUrlParser: true}); // "MongoDB" is the db name
 // MongoDB Atlas; cloud service for database
 // mongodb+srv://dbUser:<password>@cluster0-nyrlb.mongodb.net/test?retryWrites=true&w=majority
-// mongoose.connect('mongodb+srv://dbUser:Kilo3ch0@cluster0-nyrlb.mongodb.net/usersData?retryWrites=true&w=majority', {useNewUrlParser: true}); // "test" is the db name
+mongoose.connect('mongodb+srv://dbUser:Kilo3ch0@cluster0-nyrlb.mongodb.net/usersData?retryWrites=true&w=majority', {useNewUrlParser: true}); // "test" is the db name
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
