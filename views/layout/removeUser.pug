@@ -3,7 +3,7 @@ html
         title= title
     body
         h1= message
-        form(action='/delete' method="post")
+        form(action='/deleted/' + user._id method="post")
             div(hidden)
                 label(for=createdDate)
                 input(id= "createdDate", name= "createdDate", value= user.createdDate)
