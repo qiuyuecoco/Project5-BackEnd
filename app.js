@@ -161,13 +161,14 @@ app.post('/deleted/:_id', (req, res) =>{
 // Sort last name; ascending
 app.get('/lastNameAscending', function (req, res){
     user.find({}, null, {sort:{ lastName: 1 }},(err, docs)=>{
+        // ({}).collation({ locale: "en" }).sort({ lastName: 1 })
         res.render('lastNameAscending',
                 {
                     title: 'Last Name Sort Ascending',
                     message: `List sort by last name alphabetically in ascending order`,
                     users: docs,
                 });
-    });
+    }).collation({'locale':'en'});
 });
 // Sort last name; descending
 app.get('/lastNameDescending', function (req, res){
@@ -178,7 +179,7 @@ app.get('/lastNameDescending', function (req, res){
                 message: `List sort by last name alphabetically in descending order`,
                 users: docs,
             });
-    });
+    }).collation({'locale':'en'});
 });
 app.listen(port, (err) => {
     if (err) console.log(err);
