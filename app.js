@@ -120,6 +120,7 @@ app.post('/updateUser', (req, res) =>{
         return res.redirect('/users');
     });
 });
+// get Remove User page
 app.get('/removeUser/:_id', (req, res) =>{
     let userId = req.params._id;
     console.log(`GET /user/:_id: ${JSON.stringify(req.params)}`);
@@ -135,6 +136,19 @@ app.get('/removeUser/:_id', (req, res) =>{
                 message: 'Clicking Submit will permanently delete user!',
                 user_id: data._id
             });
+    });
+});
+// delete user from the delete form
+app.post('/deleted/:_id', (req, res) =>{
+    let id= req.body._id;
+    console.log(`GET /user/:_id: ${JSON.stringify(req.params)}`);
+
+    user.deleteOne({_id: id}, (err, data) => {
+        if (err) return console.log(`Oops! ${err}`);
+        console.log(`data -- ${JSON.stringify(data)}`);
+        let returnMsg = `userID: ${id} deleted`;
+        console.log(returnMsg);
+        return res.redirect('/users');
     });
 });
 // Sort last name; ascending
