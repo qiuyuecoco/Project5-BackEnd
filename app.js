@@ -7,7 +7,7 @@ const moment = require('moment');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 4040;
+const port = process.env.PORT || 4000;
 
 const path = require('path');
 
