@@ -1,0 +1,7 @@
+hub:
+  build: .
+  ports:
+    - "4040:4040"
+  environment:
+    - FIRST = "Keisha"
+    - LAST=DING

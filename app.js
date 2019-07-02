@@ -1,8 +1,13 @@
+'use strict';
+
+// Constants
+const HOST = '0.0.0.0';
+
 const moment = require('moment');
 const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
-const port = process.env.PORT || 4000;
+const port = process.env.PORT || 4040;
 
 const path = require('path');
 
@@ -11,9 +16,10 @@ app.use(express.urlencoded({ extended: true }));
 app.set('views', path.join(__dirname, './views/layout'));
 app.set('view engine', 'pug');
 
-mongoose.connect('mongodb://127.0.0.1/MongoDB', {useNewUrlParser: true}); // "MongoDB" is the db name
+mongoose.connect('mongodb://localhost/MongoDB', {useNewUrlParser: true}); // "MongoDB" is the db name
 // MongoDB Atlas; cloud service for database
-// mongoose.connect('mongodb+srv://dbUser:Kilo3ch0@cluster0-nyrlb.mongodb.net/test?retryWrites=true&w=majority', {useNewUrlParser: true}); // "test" is the db name
+// mongodb+srv://dbUser:<password>@cluster0-nyrlb.mongodb.net/test?retryWrites=true&w=majority
+// mongoose.connect('mongodb+srv://dbUser:Kilo3ch0@cluster0-nyrlb.mongodb.net/usersData?retryWrites=true&w=majority', {useNewUrlParser: true}); // "test" is the db name
 const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
@@ -120,6 +126,7 @@ app.post('/updateUser', (req, res) =>{
         return res.redirect('/users');
     });
 });
+// get Remove User page
 app.get('/removeUser/:_id', (req, res) =>{
     let userId = req.params._id;
     console.log(`GET /user/:_id: ${JSON.stringify(req.params)}`);
@@ -137,6 +144,20 @@ app.get('/removeUser/:_id', (req, res) =>{
             });
     });
 });
+// TODO: delete user from the delete form
+app.post('/deleted/:_id', (req, res) =>{
+    let id= req.body._id;
+    console.log(`GET /user/:_id: ${JSON.stringify(req.params)}`);
+
+    user.deleteOne({_id: id}, (err, data) => {
+        if (err) return console.log(`Oops! ${err}`);
+        console.log(`data -- ${JSON.stringify(data)}`);
+        let returnMsg = `userID: ${id} deleted`;
+        console.log(returnMsg);
+        return res.redirect('/users');
+    });
+});
+
 // Sort last name; ascending
 app.get('/lastNameAscending', function (req, res){
     user.find({}, null, {sort:{ lastName: 1 }},(err, docs)=>{
@@ -161,5 +182,5 @@ app.get('/lastNameDescending', function (req, res){
 });
 app.listen(port, (err) => {
     if (err) console.log(err);
-    console.log(`App Server listening on port: ${port}`);
+    console.log(`Express server listening on http://:${HOST}:${port}`);
 });
